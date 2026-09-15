@@ -319,21 +319,22 @@ most \SI{100}{\metre} --- sub-pixel for both.
 
 \begin{table}[htbp]
 \centering
-\begin{tabular}{lrrrr}
+\small
+\begin{tabular}{lrrrrr}
 \toprule
 \textbf{Variable} & \textbf{Urban} & \textbf{Rural} &
-\textbf{UHI} & $n_{\mathrm{urb}}$ \\
+\textbf{UHI} & $n_{\mathrm{urb}}$ & $n_{\mathrm{rur}}$ \\
  & (\si{\degreeCelsius}) & (\si{\degreeCelsius}) &
-(\si{\degreeCelsius}) & \\
+(\si{\degreeCelsius}) & & \\
 \midrule
-Day LST (L2 product)      & \TODO{} & \TODO{} & 2.39 & \TODO{} \\
-Night $T_b$ (no correction) & \TODO{} & \TODO{} & 1.15 & \TODO{} \\
-Night LST (class $\varepsilon$) & \TODO{} & \TODO{} & 2.13 & \TODO{} \\
+Day LST (L2 product)            & 35.45 & 33.06 & $+2.39$ & 17\,924 & 91\,196 \\
+Night $T_b$ (no correction)       & 21.46 & 20.32 & $+1.15$ & 20\,506 & 95\,802 \\
+Night LST (class $\varepsilon$) & 23.48 & 21.35 & $+2.13$ & 20\,506 & 95\,802 \\
 \bottomrule
 \end{tabular}
 \caption{Landsat UHI, 8--9 October 2015, external
-\SIrange{5}{20}{\kilo\metre} rural ring. \TODO{fill urban/rural means
-and pixel counts from \texttt{Mumbai\_Landsat\_UHI\_headline\_v2.csv}}}
+\SIrange{5}{20}{\kilo\metre} rural ring. Statistics at
+\SI{100}{\metre}.}
 \label{tab:landsat_uhi}
 \end{table}
 
@@ -347,10 +348,58 @@ reflective bands, which carry no signal on a night pass, so a
 near-perfect night valid fraction reflects the mask finding nothing to
 flag rather than a genuinely clear scene.
 
-\TODO{Insert the LST map, anomaly map and distribution plot --- the
-brief requires all three, for day and night. Rasters are exported in
-\texttt{Mumbai\_UHI\_Landsat}; they need rendering with a scale bar,
-north arrow, and a shared colour scale between day and night.}
+\begin{table}[htbp]
+\centering
+\begin{tabular}{lr}
+\toprule
+\textbf{WorldCover class} & \textbf{Mean day LST (\si{\degreeCelsius})} \\
+\midrule
+Built-up (50)        & 36.92 \\
+Bare / sparse (60)   & 34.57 \\
+Grassland (30)       & 33.83 \\
+Cropland (40)        & 33.72 \\
+Tree cover (10)      & 32.04 \\
+Mangroves (95)       & 31.20 \\
+Wetland (90)         & 29.72 \\
+Water (80)           & 27.55 \\
+\bottomrule
+\end{tabular}
+\caption{Mean daytime LST by land-cover class across the full analysis
+extent, 8 October 2015.}
+\label{tab:byclass}
+\end{table}
+
+Built-up is the warmest class by \SI{2.35}{\degreeCelsius} over the
+next warmest, and water the coolest, \SI{9.37}{\degreeCelsius} below
+built-up. The three classes excluded from the rural reference ---
+water, wetland and mangrove --- are the three coolest.
+
+\TODO{Interpret the class table briefly. It does two jobs: it confirms
+built-up genuinely drives the urban signal rather than the urban zone
+merely containing warm pixels, and it quantifies what including water
+or mangrove in a rural reference would have cost. Link the second
+point to Table~\ref{tab:landsat_water}.}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{fig9_landsat_distributions.pdf}
+\caption{Landsat urban and rural LST distributions. Dashed lines mark
+zone means. Night uses the emissivity-corrected LST.}
+\label{fig:landsat_dist}
+\end{figure}
+
+The two panels behave quite differently. By day the distributions
+overlap heavily, with the urban distribution shifted right but sharing
+most of its range with the rural one. At night the urban distribution
+collapses into a narrow peak near \SI{24}{\degreeCelsius} --- urban
+standard deviation \num{1.01} against rural \num{1.28} --- and sits
+almost entirely above the rural spread.
+
+\TODO{Insert the LST and anomaly maps --- the brief requires an LST
+map and an anomaly map alongside the distribution plot above. The
+rasters are in \texttt{04\_M\_landsat/v2\_rasters/}; they need
+rendering with a scale bar, north arrow, and a shared colour scale
+between day and night.}
 
 \TODO{Interpret the day/night result. Points worth working through:
 
@@ -810,6 +859,13 @@ $^\dagger$ headline definition.}
 \label{tab:landsat_ring}
 \end{table}
 
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.72\textwidth]{fig10_landsat_ring.pdf}
+\caption{Landsat UHI under four rural ring definitions.}
+\label{fig:landsat_ring}
+\end{figure}
+
 Landsat UHI moves by at most \SI{0.18}{\degreeCelsius} across the four
 rings --- markedly less than the MODIS equivalent in
 Table~\ref{tab:ringsens}, which ranges up to
@@ -820,6 +876,42 @@ to where the rural ring sits? Consider what a \SI{1}{\kilo\metre}
 pixel does at the ring's inner edge that a \SI{100}{\metre} pixel does
 not, and whether the seasonal composite in Part~B samples a different
 set of surfaces than a single October scene.}
+
+\paragraph{Water in the rural reference.}
+The same test run in Part~B was repeated on the Landsat scenes.
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{lrrr}
+\toprule
+\textbf{Mode} & \textbf{Water excl.} & \textbf{Water incl.} &
+\textbf{Difference} \\
+ & (\si{\degreeCelsius}) & (\si{\degreeCelsius}) &
+(\si{\degreeCelsius}) \\
+\midrule
+Day   & $+2.385$ & $+5.635$ & $+3.250$ \\
+Night & $+2.127$ & $+1.200$ & $-0.927$ \\
+\bottomrule
+\end{tabular}
+\caption{Effect of retaining water in the rural reference, Landsat.
+Rural means with water included: \SI{29.82}{\degreeCelsius} by day,
+\SI{22.28}{\degreeCelsius} by night.}
+\label{tab:landsat_water}
+\end{table}
+
+Including water more than doubles the daytime figure
+($+2.39 \rightarrow +5.64$) and nearly halves the night-time one
+($+2.13 \rightarrow +1.20$). The effect is an order of magnitude
+larger than the MODIS equivalent in Table~\ref{tab:watertest}, where
+the largest shift was \SI{0.45}{\degreeCelsius}.
+
+\TODO{Interpret. The sign reversal between day and night is the same
+one predicted in Section~\ref{sec:waterexcl}, but the magnitude here
+dwarfs the MODIS result. Why would a single-date \SI{30}{\metre} scene
+be so much more sensitive to including the sea than a multi-year
+\SI{1}{\kilo\metre} seasonal composite? Consider what averaging over
+five years does to a water surface, and what the different pixel sizes
+do to the land--sea boundary.}
 
 \paragraph{Emissivity correction.}
 Night-time UHI computed from brightness temperature is
@@ -885,8 +977,7 @@ Aqua  & 2019--23 & Night & 01:53 & 1000 & $+2.47$ \\
 \caption{Post-monsoon UHI across both sensors. All rows use the same
 \SIrange{5}{20}{\kilo\metre} rural ring. The Landsat night value is
 emissivity-corrected LST. MODIS 2015 rows are matched to the Landsat
-acquisition year. \TODO{confirm the Landsat overpass times from the
-scene metadata}}
+acquisition year.}
 \label{tab:comparison}
 \end{table}
 
@@ -918,15 +1009,14 @@ The change is large enough to matter:
  & (\si{\degreeCelsius}) & (\si{\degreeCelsius}) &
 (\si{\degreeCelsius}) \\
 \midrule
-Day LST     & 3.71 & 2.385 & $-1.33$ \\
-Night $T_b$   & 0.32 & 1.146 & $+0.83$ \\
-Night LST   & --- & 2.127 & --- \\
+Day LST       & 3.811 & 2.385 & $-1.426$ \\
+Night $T_b$     & 0.339 & 1.146 & $+0.806$ \\
+Night LST     & 1.331 & 2.127 & $+0.796$ \\
 \bottomrule
 \end{tabular}
-\caption{Effect of moving the rural reference outside the city.
-Internal-reference figures are from the earlier Part~A run.
-\TODO{replace with the exact values in
-\texttt{Mumbai\_Landsat\_ReferenceDefinition\_v2.csv}}}
+\caption{Effect of moving the rural reference outside the city, with
+all other settings held fixed. Internal rural means: 31.64
+(day LST), 21.12 ($T_b$), 22.15 (night LST)~\si{\degreeCelsius}.}
 \label{tab:refdef}
 \end{table}
 

@@ -2,6 +2,11 @@
 # Kept locally in 07_reference/Lectures/ for reference.
 07_reference/Lectures/
 
+# Landsat v2 rasters — ~30 MB each, 139 MB total. Regenerable by running
+# 02_scripts/M_landsat_daynight.js and starting the export tasks. The CSVs
+# they accompany ARE tracked, so every number in the report is in the repo.
+04_M_landsat/v2_rasters/
+
 # LaTeX build artefacts
 *.aux
 *.log

@@ -12,8 +12,9 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import numpy as np
 
-TABLES = 'tables'
-OUT    = os.path.join('..', '06_report', 'figures')
+TABLES    = 'tables'                                  # MODIS exports
+LS_TABLES = os.path.join('..', '04_M_landsat', 'v2_tables')  # Landsat exports
+OUT       = os.path.join('..', '06_report', 'figures')
 os.makedirs(OUT, exist_ok=True)
 
 SEASONS = ['Winter', 'Pre-monsoon', 'Monsoon', 'Post-monsoon']
@@ -263,3 +264,62 @@ ax1.set_title('Clear-sky sampling: composites available vs retrievals retained',
 save(fig, 'fig8_sampling_bias')
 
 print('\nAll figures written to', os.path.abspath(OUT))
+
+
+# ---------------------------------------------------------------
+# Fig 9 — Landsat day/night distributions (Part A)
+# ---------------------------------------------------------------
+ls_path = os.path.join(LS_TABLES, 'Mumbai_Landsat_Distribution_PixelValues_v2.csv')
+if os.path.exists(ls_path):
+    with open(ls_path) as f:
+        lsd = list(csv.DictReader(f))
+    lk = defaultdict(list)
+    for r in lsd:
+        try:
+            lk[(r['mode'], r['zone'])].append(float(r['T']))
+        except (ValueError, KeyError):
+            pass
+
+    fig, axes = plt.subplots(1, 2, figsize=(10, 3.8))
+    for ax, mode in zip(axes, ['Day', 'Night']):
+        u, rr = lk[(mode, 'Urban')], lk[(mode, 'Rural')]
+        if not u or not rr:
+            ax.set_visible(False); continue
+        bins = np.linspace(min(min(u), min(rr)), max(max(u), max(rr)), 45)
+        ax.hist(rr, bins=bins, color=C_RURAL, alpha=0.65, label='Rural', density=True)
+        ax.hist(u,  bins=bins, color=C_URBAN, alpha=0.65, label='Urban', density=True)
+        ax.axvline(np.mean(rr), color=C_RURAL, ls='--', lw=1.3)
+        ax.axvline(np.mean(u),  color=C_URBAN, ls='--', lw=1.3)
+        date = '8 Oct 2015' if mode == 'Day' else '9 Oct 2015'
+        ax.set_title('%s — %s   (ΔT = %+.2f °C)'
+                     % (mode, date, np.mean(u) - np.mean(rr)), fontsize=9.5)
+        ax.set_xlabel('LST (°C)'); ax.set_ylabel('Density')
+        ax.legend(frameon=False, fontsize=7.5)
+    fig.suptitle('Landsat urban and rural LST distributions', fontsize=11, y=1.02)
+    fig.tight_layout()
+    save(fig, 'fig9_landsat_distributions')
+
+
+# ---------------------------------------------------------------
+# Fig 10 — Landsat sensitivity summary (Part A)
+# ---------------------------------------------------------------
+ring_p = os.path.join(LS_TABLES, 'Mumbai_Landsat_RuralRing_Sensitivity_v2.csv')
+if os.path.exists(ring_p):
+    with open(ring_p) as f:
+        lr = list(csv.DictReader(f))
+    order = ['2-20 km', '5-20 km', '10-25 km', '5-30 km']
+    fig, ax = plt.subplots(figsize=(7, 3.8))
+    x = np.arange(len(order)); w = 0.38
+    for i, mode in enumerate(['Day', 'Night']):
+        v = []
+        for rg in order:
+            m = [r for r in lr if r['ring'] == rg and r['mode'] == mode]
+            v.append(float(m[0]['uhi']) if m else np.nan)
+        b = ax.bar(x + (i - 0.5) * w, v, w, label=mode,
+                   color=['#d95f02', '#3b528b'][i], edgecolor='white', linewidth=0.6)
+        ax.bar_label(b, fmt='%.2f', fontsize=7, padding=2)
+    ax.set_xticks(x); ax.set_xticklabels(order)
+    ax.set_ylabel('UHI intensity (°C)')
+    ax.set_title('Landsat UHI sensitivity to rural ring definition', fontsize=10)
+    ax.legend(frameon=False, fontsize=8)
+    save(fig, 'fig10_landsat_ring')
