@@ -209,6 +209,32 @@ vegetation (60) was kept in the rural reference: it is genuinely
 non-built, and excluding it would have biased the reference toward
 vegetated, and therefore cooler, surfaces.
 
+\paragraph{Mask erosion.}
+\label{sec:erosion}
+
+No mask erosion (shrinking each zone inward by a fixed radius to
+discard mixed-pixel edges) was applied to either the urban or the
+rural mask. A different mechanism was used instead to achieve the same
+purpose. The urban zone is bounded by the administrative edge rather
+than eroded, and contamination of the \emph{rural} reference by the
+urban fringe --- the effect erosion is normally used to prevent --- is
+handled by the \SI{5}{\kilo\metre} inner gap of the ring
+(Section~\ref{sec:ringsens}): rather than eroding a rural mask that
+touches the city, the ring is defined so that it never touches the
+city in the first place.
+
+The ring's inner and outer radii were therefore treated as the
+parameter to sweep, in place of an erosion radius, and the same
+question the brief asks of erosion --- how far the buffer extends and
+how much UHI moves as a result --- is answered by
+Table~\ref{tab:ringsens} and Table~\ref{tab:landsat_ring}: moving the
+inner edge from \SI{2}{} to \SI{10}{\kilo\metre} shifts MODIS UHI by
+up to \SI{0.50}{\degreeCelsius}, and the same sweep on Landsat shifts
+it by at most \SI{0.18}{\degreeCelsius}. The urban mask was left
+un-eroded because it is defined by the administrative boundary rather
+than by a buffer, so there is no equivalent contamination on that side
+to remove.
+
 \paragraph{Water and wetland exclusion.}
 \label{sec:waterexcl}
 
