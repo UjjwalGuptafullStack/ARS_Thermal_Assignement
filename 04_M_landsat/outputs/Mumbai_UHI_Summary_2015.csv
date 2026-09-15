@@ -1,0 +1,5 @@
+system:index,Category,Maximum,Mean_Temperature,Median_Temperature,Minimum,Pixel_Count,.geo
+0,Urban Daytime,46.51857464,35.51005278603781,35.18815835407543,27.767316919999985,185969,"{""type"":""MultiPoint"",""coordinates"":[]}"
+1,Non-Urban Daytime,45.13769456,31.795784962202635,31.687470443004987,25.087589240000057,271526,"{""type"":""MultiPoint"",""coordinates"":[]}"
+2,Urban Nighttime,23.227289457200584,21.460259375977717,21.828042747383694,17.215201704533797,213016,"{""type"":""MultiPoint"",""coordinates"":[]}"
+3,Non-Urban Nighttime,23.567554603333633,21.14409452140406,21.35872344535869,17.14379896852182,301059,"{""type"":""MultiPoint"",""coordinates"":[]}"

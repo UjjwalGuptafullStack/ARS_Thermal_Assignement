@@ -1,0 +1,3 @@
+system:index,Daytime_UHI_C,Nighttime_UHI_C,Reference_Day_Mean_C,Reference_Method,Reference_Night_Mean_C,.geo
+0,3.7142678238351756,0.31616485457365684,31.795784962202635,Original Non-Urban,21.14409452140406,"{""type"":""MultiPoint"",""coordinates"":[]}"
+1,6.166166200294967,0.18265868254363582,29.343886585742844,Strict Non-Urban (1 km buffer),21.27760069343408,"{""type"":""MultiPoint"",""coordinates"":[]}"

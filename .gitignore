@@ -1,0 +1,28 @@
+# Lecture slide decks — course material, not our work, not ours to redistribute.
+# Kept locally in 07_reference/Lectures/ for reference.
+07_reference/Lectures/
+
+# LaTeX build artefacts
+*.aux
+*.log
+*.out
+*.toc
+*.synctex.gz
+*.fls
+*.fdb_latexmk
+*.bbl
+*.blg
+
+# Generated preview — rebuild from the .tex
+06_report/UHI_report_PREVIEW.pdf
+
+# OS and editor
+.DS_Store
+Thumbs.db
+*.swp
+.vscode/
+.idea/
+
+# Python
+__pycache__/
+*.pyc

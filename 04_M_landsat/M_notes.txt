@@ -1,0 +1,45 @@
+Project direction: Mumbai Urban Heat Island Analysis
+Study Area
+
+Mumbai metropolitan region, using our uploaded Mumbai AOI.
+
+Satellite Data
+
+We found a valid Landsat 8 daytime/nighttime pair:
+
+Observation	Date	Dataset	Product
+Daytime	8 October 2015	Landsat 8 Collection 2 Tier-1 Level-2	Surface Temperature (ST_B10)
+Nighttime	9 October 2015	Landsat 8 Collection 2 Tier-2 Level-1	Thermal Band (B10)
+
+Both scenes cover the complete Mumbai AOI.
+
+Why this pair?
+Only one day apart.
+Daytime scene has low cloud cover: 8.49%.
+Nighttime thermal values are physically reasonable.
+Both images have sufficient valid pixels.
+This is much better than the November pair, whose nighttime temperatures were anomalously low.
+Current Temperature Results
+Statistic	Daytime	Nighttime
+Mean	33.22°C	21.30°C
+Median	33.19°C	21.55°C
+Minimum	21.38°C	17.20°C
+Maximum	45.81°C	23.39°C
+Processing Method
+
+Daytime:
+
+Use ST_B10.
+Apply the official Landsat scaling factors.
+Convert Kelvin to Celsius.
+Mask clouds, cloud shadows, cirrus, snow, and invalid pixels.
+
+Nighttime:
+
+Use thermal band B10.
+Convert digital numbers to radiance.
+Apply Landsat 8 thermal constants K1 and K2.
+Convert radiance to brightness temperature in Celsius.
+Apply QA masking.
+
+Important: the nighttime product is being reported as Brightness Temperature (BT), not Land Surface Temperature, because we have not applied emissivity correction.

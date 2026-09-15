@@ -1,0 +1,17 @@
+platform,mode,season,n_composites,urban_px,rural_px
+Terra,Day,Winter,40,241,1055
+Terra,Day,Pre-monsoon,55,241,1055
+Terra,Day,Monsoon,80,241,1055
+Terra,Day,Post-monsoon,55,241,1055
+Terra,Night,Winter,40,239,917
+Terra,Night,Pre-monsoon,55,241,977
+Terra,Night,Monsoon,80,241,1055
+Terra,Night,Post-monsoon,55,241,1042
+Aqua,Day,Winter,40,241,1055
+Aqua,Day,Pre-monsoon,54,241,1055
+Aqua,Day,Monsoon,80,241,1055
+Aqua,Day,Post-monsoon,55,241,1055
+Aqua,Night,Winter,40,241,1016
+Aqua,Night,Pre-monsoon,54,241,1012
+Aqua,Night,Monsoon,80,241,1055
+Aqua,Night,Post-monsoon,55,241,1055
