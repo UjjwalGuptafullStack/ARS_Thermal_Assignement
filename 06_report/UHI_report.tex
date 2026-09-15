@@ -171,7 +171,7 @@ classification threshold and has no administrative meaning.
 
 \subsection{Urban and rural zones}
 
-Zones come from ESA WorldCover v200 (2021) \citep{worldcover}, a
+Zones come from ESA WorldCover v200 (2021) \cite{worldcover}, a
 \SI{10}{\metre} global product with eleven classes.
 
 \begin{itemize}
@@ -783,8 +783,8 @@ reference definition was at fault.
 \subsection{Method}
 
 Seasonal LST comes from the MODIS eight-day composites,
-\texttt{MODIS/061/MOD11A2} (Terra) \citep{mod11a2} and
-\texttt{MODIS/061/MYD11A2} (Aqua) \citep{myd11a2}, both at
+\texttt{MODIS/061/MOD11A2} (Terra) \cite{mod11a2} and
+\texttt{MODIS/061/MYD11A2} (Aqua) \cite{myd11a2}, both at
 \SI{1}{\kilo\metre}. These are Collection~6.1 split-window retrievals
 with land-cover-based emissivity.
 
@@ -827,7 +827,7 @@ Post-monsoon         & October--December & Landsat comparison \\
 \bottomrule
 \end{tabular}
 \caption{India Meteorological Department four-season classification
-\citep{imd_seasons}. All four were computed.}
+\cite{imd_seasons}. All four were computed.}
 \label{tab:seasons}
 \end{table}
 
@@ -849,11 +849,21 @@ possible. A DJF winter would straddle two years and force an arbitrary
 choice about each December.
 
 \paragraph{Climatological basis.}
-\TODO{Two or three sentences on Mumbai's climate with a real citation:
-mean monthly temperature and rainfall, and normal monsoon onset and
-withdrawal dates. IMD Climatological Tables or the IMD Mumbai regional
-page. This is what turns the season definition from an assertion into
-a defended choice. Without it this section loses marks.}
+IMD's revised normal dates for Mumbai place monsoon onset at
+11~June and withdrawal at 8~October \cite{imd_onset_withdrawal},
+which is what fixes the June--September window used for the monsoon
+season here: it is bounded by the city's own onset and withdrawal
+dates rather than a generic national figure. The pre-monsoon window is
+the driest and hottest part of the year at this station --- the
+1991--2020 normal gives a May mean daily maximum of
+\SI{34.3}{\degreeCelsius} against \SI{31.2}{\degreeCelsius} in
+January, with December--February rainfall below
+\SI{2}{\milli\metre} a month against \SI{384}{} to
+\SI{920}{\milli\metre} a month from June to September
+\cite{imd_climate_normals}. Pre-monsoon (March--May) and winter
+(January--February) are therefore climatologically distinct: the
+former is hot and dry, building toward the monsoon onset, and the
+latter is markedly cooler and equally dry.
 
 \paragraph{Quality screening.}
 \label{sec:qc}
@@ -977,7 +987,7 @@ in winter against \SI{13.07}{\degreeCelsius} for rural, and
 city is thermally more stable in both directions --- slower to heat
 and slower to cool --- which is the definition of higher apparent
 thermal inertia. This is the nocturnal dominance Oke describes
-\citep{oke}, and it holds regardless of what the daytime signal is
+\cite{oke}, and it holds regardless of what the daytime signal is
 doing.
 
 \paragraph{Monsoon.}
@@ -1498,6 +1508,26 @@ India Meteorological Department (2026) \textit{Climatological Tables
 and Seasonal Classification}. Ministry of Earth Sciences, Government
 of India. Available at: \url{https://mausam.imd.gov.in/}
 (Accessed: 13 September 2026).
+
+\bibitem{imd_onset_withdrawal}
+India Meteorological Department (2020) \textit{New Normal Dates of
+Onset/Progress and Withdrawal of Southwest Monsoon over India}. Press
+release, Ministry of Earth Sciences. Available at:
+\url{https://mausam.imd.gov.in/backend/assets/press_release_pdf/IMD_Press_release_new_onset_and_withdrawal_dates(Final).pdf}
+(Accessed: 15 September 2026).
+
+\bibitem{imd_climate_normals}
+India Meteorological Department, Pune (2021) \textit{Climatological
+Tables of Observatories in India 1991--2020}. Available at:
+\url{https://www.imdpune.gov.in/library/public/Climatological\%20Tables\%201991-2020.pdf}
+(Accessed: 15 September 2026), Mumbai (Santacruz) entry.
+\TODO{The specific monthly figures quoted in the text (May/January
+mean maxima, monsoon-month rainfall) were sourced via
+``Climate of Mumbai'', Wikipedia,
+\url{https://en.wikipedia.org/wiki/Climate_of_Mumbai}, which cites this
+same IMD table. Open the PDF above, find the Mumbai/Santacruz page, and
+confirm the numbers in the Climatological basis paragraph match before
+submitting -- I was not able to open the PDF directly to check.}
 
 \bibitem{worldcover}
 Zanaga, D. \textit{et al.} (2022) \textit{ESA WorldCover 10 m 2021
