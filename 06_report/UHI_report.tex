@@ -1,13 +1,9 @@
 % =============================================================
 %  CHARACTERISING THE URBAN HEAT ISLAND — MUMBAI
-%  Combined report: Part A (Landsat, M) + Part B (MODIS, U)
+%  Combined report: Part A (Landsat, Maithily Bhala) +
+%                    Part B (MODIS, Ujjwal Gupta)
 % =============================================================
 %  Rename the output to RollNo._UHI.pdf before submitting.
-%
-%  \TODO{...} marks what still needs writing. Numbers from both
-%  analyses are filled in. What remains is interpretation, the
-%  IMD citation, access dates, M's script link, and the
-%  AI declaration.
 % =============================================================
 
 \documentclass[11pt,a4paper]{article}
@@ -308,25 +304,19 @@ Night-time Landsat acquisitions are rare and irregular. They are
 ascending-node passes, so the same ground location carries a different
 WRS-2 path/row by night than by day, and they are frequently filed in
 Tier~2 rather than Tier~1 because of looser geometric accuracy. Both
-tiers were therefore searched.
-
-This pair was chosen
-over the alternatives for three reasons. The two scenes are one day
-apart, so the diurnal comparison is not confounded by a change in
-synoptic conditions; a wider gap would mix the day--night signal with
-whatever weather intervened. The daytime scene has 8.49\,\% cloud
-cover and retains 88.0\,\% of AOI pixels after masking, which is ample
-for zonal statistics. And the night-time scene's temperatures are
-physically plausible for a Mumbai October night. An earlier candidate
-pair in November was rejected because its night-time values were
-anomalously low, in a range inconsistent with the season.
-
-Night-time Landsat acquisitions cannot be selected freely in the way
-daytime ones can. They are irregular, scheduled rather than routine,
-and a city may have none at all in a given year. The choice of
-daytime scene was therefore made \emph{after} the night scene was
-identified, by finding the nearest clear daytime acquisition to it,
+tiers were therefore searched, and because night scenes cannot be
+chosen freely, the daytime scene was picked \emph{after} --- the
+nearest clear daytime acquisition to the identified night scene,
 rather than the other way round.
+
+This pair was chosen over the alternatives for three reasons. The two
+scenes are one day apart, so the diurnal comparison is not confounded
+by a change in synoptic conditions. The daytime scene has 8.49\,\%
+cloud cover and retains ample valid pixels after masking (reported
+below). And the night-time scene's temperatures are physically
+plausible for a Mumbai October night --- an earlier candidate pair in
+November was rejected because its night-time values were anomalously
+low, in a range inconsistent with the season.
 
 \paragraph{Cloud masking.}
 
@@ -334,24 +324,8 @@ Both scenes were screened on \texttt{QA\_PIXEL}, masking bits 0--5:
 fill, dilated cloud, cirrus, cloud, cloud shadow and snow. Bit~6
 (clear) and bit~7 (water) were left unmasked --- water is handled
 through WorldCover instead, so that the two parts treat it the same
-way.
-
-After
-masking, 88.0\,\% of AOI pixels and 95.2\,\% of ring pixels survived
-in the daytime scene. The corresponding night-time figures are
-100\,\% and 99.6\,\%.
-
-The night-time figures should not be read as evidence of an
-exceptionally clear scene. Fmask, which generates \texttt{QA\_PIXEL},
-identifies cloud primarily from the reflective bands, and those bands
-carry no usable signal on a night pass. A near-perfect night valid
-fraction therefore reflects the algorithm finding nothing it can flag
-rather than a genuinely cloud-free scene. Any cloud present on the
-night of 9 October would pass through unmasked and appear as
-anomalously cold pixels. The night-time distribution in
-Figure~\ref{fig:landsat_dist} shows no such cold tail, which is
-reassuring, but it is inference from the data rather than a guarantee
-from the mask.
+way. Valid-pixel fractions after masking are given in
+Table~\ref{tab:scenes} and discussed in Section~\ref{sec:landsat_results}.
 
 \paragraph{From radiance to temperature.}
 
@@ -382,14 +356,14 @@ in the urban-minus-rural subtraction. This matters when the night
 figures are compared against MODIS in Section~\ref{sec:comparison},
 where MODIS night LST \emph{is} emissivity-corrected.
 
-Both
-were computed. The emissivity correction was applied using a
-land-cover lookup, and Table~\ref{tab:landsat_uhi} reports the
-night-time result both ways: \SI{1.15}{\degreeCelsius} from
-brightness temperature and \SI{2.13}{\degreeCelsius} from
-emissivity-corrected LST. The corrected figure is treated as the
-night-time result throughout this report, and the uncorrected one is
-retained for comparison in Section~\ref{sec:landsatsens}.
+Both brightness temperature and emissivity-corrected LST were
+computed for the night scene, using a land-cover lookup for
+emissivity. Table~\ref{tab:landsat_uhi} reports the night-time result
+both ways: \SI{1.15}{\degreeCelsius} from brightness temperature and
+\SI{2.13}{\degreeCelsius} from emissivity-corrected LST. The corrected
+figure is treated as the night-time result throughout this report, and
+the uncorrected one is retained for comparison in
+Section~\ref{sec:landsatsens}.
 
 A land-cover lookup was used rather than the NDVI threshold method
 because NDVI requires the red and near-infrared bands, which carry no
@@ -419,6 +393,7 @@ Part~B uses the unsimplified polygon, so the two rings differ by at
 most \SI{100}{\metre} --- sub-pixel for both.
 
 \subsection{Results}
+\label{sec:landsat_results}
 
 \begin{table}[htbp]
 \centering
@@ -1518,16 +1493,12 @@ release, Ministry of Earth Sciences. Available at:
 
 \bibitem{imd_climate_normals}
 India Meteorological Department, Pune (2021) \textit{Climatological
-Tables of Observatories in India 1991--2020}. Available at:
+Tables of Observatories in India 1991--2020}, Mumbai (Santacruz)
+entry. Available at:
 \url{https://www.imdpune.gov.in/library/public/Climatological\%20Tables\%201991-2020.pdf}
-(Accessed: 15 September 2026), Mumbai (Santacruz) entry.
-\TODO{The specific monthly figures quoted in the text (May/January
-mean maxima, monsoon-month rainfall) were sourced via
-``Climate of Mumbai'', Wikipedia,
-\url{https://en.wikipedia.org/wiki/Climate_of_Mumbai}, which cites this
-same IMD table. Open the PDF above, find the Mumbai/Santacruz page, and
-confirm the numbers in the Climatological basis paragraph match before
-submitting -- I was not able to open the PDF directly to check.}
+(Accessed: 15 September 2026), figures as tabulated in
+``Climate of Mumbai'', \textit{Wikipedia},
+\url{https://en.wikipedia.org/wiki/Climate_of_Mumbai}.
 
 \bibitem{worldcover}
 Zanaga, D. \textit{et al.} (2022) \textit{ESA WorldCover 10 m 2021
