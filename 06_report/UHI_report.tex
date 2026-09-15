@@ -480,11 +480,36 @@ collapses into a narrow peak near \SI{24}{\degreeCelsius} --- urban
 standard deviation \num{1.01} against rural \num{1.28} --- and sits
 almost entirely above the rural spread.
 
-\TODO{Insert the LST and anomaly maps --- the brief requires an LST
-map and an anomaly map alongside the distribution plot above. The
-rasters are in \texttt{04\_M\_landsat/v2\_rasters/}; they need
-rendering with a scale bar, north arrow, and a shared colour scale
-between day and night.}
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.48\textwidth]{fig11_landsat_day_lst.pdf}
+\includegraphics[width=0.48\textwidth]{fig12_landsat_night_lst.pdf}
+\caption{Landsat LST, day (left) and night (right, emissivity
+corrected). Rasters are exported in UTM Zone 43N; the axes are the
+projection's easting and northing in metres, not the source boundary's
+geographic CRS.}
+\label{fig:landsat_lst_maps}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.48\textwidth]{fig13_landsat_day_anomaly.pdf}
+\includegraphics[width=0.48\textwidth]{fig14_landsat_night_anomaly.pdf}
+\caption{Landsat anomaly against the rural mean, day (left) and night
+(right). Positive values are warmer than the rural reference.}
+\label{fig:landsat_anomaly_maps}
+\end{figure}
+
+The day map shows the built-up core running along the peninsula and
+into the eastern suburbs consistently warmer than the surrounding
+green cover, matching the class ranking in
+Table~\ref{tab:byclass}. The night map shows a similar but coarser
+pattern with a visible striped gap in the north-west quadrant, most
+likely the consequence of the unreliable night-time cloud mask
+discussed above rather than a real feature of the surface. The
+anomaly maps make the built-up footprint easier to trace than the raw
+LST maps do, because they remove the broad north--south gradient
+present in both scenes.
 
 Day
 and night UHI are close in magnitude on this pair,
@@ -523,6 +548,208 @@ on the zone definition, the pixel size, and the mixing that follows
 from them.
 
 % =============================================================
+
+\subsection{Sensitivity: rural ring, water, and emissivity}
+\label{sec:landsatsens}
+
+\paragraph{Rural ring.}
+The same four ring variants used in Part~B were run on the Landsat
+scenes.
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{lrr}
+\toprule
+\textbf{Ring} & \textbf{Day UHI} & \textbf{Night UHI} \\
+ & (\si{\degreeCelsius}) & (\si{\degreeCelsius}) \\
+\midrule
+\SIrange{2}{20}{\kilo\metre}  & 2.400 & 2.047 \\
+\SIrange{5}{20}{\kilo\metre}$^\dagger$ & 2.385 & 2.127 \\
+\SIrange{10}{25}{\kilo\metre} & 2.443 & 2.223 \\
+\SIrange{5}{30}{\kilo\metre}  & 2.392 & 2.129 \\
+\midrule
+\textbf{Range}                & 0.058 & 0.176 \\
+\bottomrule
+\end{tabular}
+\caption{Landsat UHI under four rural ring definitions.
+$^\dagger$ headline definition.}
+\label{tab:landsat_ring}
+\end{table}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.72\textwidth]{fig10_landsat_ring.pdf}
+\caption{Landsat UHI under four rural ring definitions.}
+\label{fig:landsat_ring}
+\end{figure}
+
+Landsat UHI moves by at most \SI{0.18}{\degreeCelsius} across the four
+rings --- markedly less than the MODIS equivalent in
+Table~\ref{tab:ringsens}, which ranges up to
+\SI{0.50}{\degreeCelsius}.
+
+Landsat
+is the less sensitive of the two despite the finer grid, which is at
+first counter-intuitive. The explanation is temporal rather than
+spatial. The MODIS sweep operates on a five-year seasonal mean in
+which the land-cover gradient outside the city --- irrigated land
+close in, drier land further out --- is consistently present, so
+moving the ring systematically changes what the reference is made of.
+The Landsat sweep operates on one October morning, when that gradient
+was weaker: post-monsoon soil moisture was still widely distributed,
+so land at \SI{2}{} and \SI{10}{\kilo\metre} was thermally more alike
+than it would be in, say, April.
+
+The result is a useful caution. A sensitivity test on a single scene
+measures how much the answer depends on the zone definition
+\emph{on that date}, not in general. Part~B's sweep, spanning five
+years and four seasons, is the better guide to how much the choice
+matters overall.
+
+\paragraph{Water in the rural reference.}
+The same test run in Part~B was repeated on the Landsat scenes.
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{lrrr}
+\toprule
+\textbf{Mode} & \textbf{Water excl.} & \textbf{Water incl.} &
+\textbf{Difference} \\
+ & (\si{\degreeCelsius}) & (\si{\degreeCelsius}) &
+(\si{\degreeCelsius}) \\
+\midrule
+Day   & $+2.385$ & $+5.635$ & $+3.250$ \\
+Night & $+2.127$ & $+1.200$ & $-0.927$ \\
+\bottomrule
+\end{tabular}
+\caption{Effect of retaining water in the rural reference, Landsat.
+Rural means with water included: \SI{29.82}{\degreeCelsius} by day,
+\SI{22.28}{\degreeCelsius} by night.}
+\label{tab:landsat_water}
+\end{table}
+
+Including water more than doubles the daytime figure
+($+2.39 \rightarrow +5.64$) and nearly halves the night-time one
+($+2.13 \rightarrow +1.20$). The effect is an order of magnitude
+larger than the MODIS equivalent in Table~\ref{tab:watertest}, where
+the largest shift was \SI{0.45}{\degreeCelsius}.
+
+The
+sign reversal matches the prediction and the MODIS result, but the
+magnitude does not: \SI{3.25}{\degreeCelsius} by day here against a
+MODIS maximum of \SI{0.45}{\degreeCelsius}.
+
+Two things differ. First, averaging. The MODIS figure is a five-year
+seasonal mean, and a water surface is almost the same temperature
+every day of every year --- so in a multi-year composite the sea
+contributes a stable, heavily-averaged value, while the land around it
+varies and partially averages out. In a single scene the full
+instantaneous land--sea contrast is present undiluted. On 8 October
+the daytime mean of water was \SI{27.55}{\degreeCelsius} against
+\SI{36.92}{\degreeCelsius} for built-up, a gap of nearly ten degrees
+(Table~\ref{tab:byclass}).
+
+Second, mixing. At \SI{1}{\kilo\metre} a coastal MODIS pixel is part
+land and part sea, and its retrieved temperature is already a blend;
+the land--sea boundary is smeared across the pixel grid before any
+zonal statistic is taken. At \SI{100}{\metre} the boundary is sharp
+and sea pixels enter the rural mean at their full, undiluted value. The
+finer sensor is therefore \emph{more} exposed to the error, not less
+--- which is worth stating plainly, because the intuition that higher
+resolution is uniformly safer does not hold here.
+
+\paragraph{Emissivity correction.}
+Night-time UHI computed from brightness temperature is
+\SI{1.15}{\degreeCelsius}; from emissivity-corrected LST it is
+\SI{2.13}{\degreeCelsius}. Applying the correction nearly doubles the
+result.
+
+The correction does not cancel in the urban-minus-rural subtraction
+because the two zones have different emissivities: built-up is
+assigned \num{0.970} and vegetated surfaces \num{0.985}. A surface
+with lower emissivity emits less at a given temperature, so correcting
+for it raises the retrieved temperature more over the city than over
+the countryside, widening the difference.
+
+The
+rule of thumb from the module material is roughly \SI{1}{\kelvin} of
+LST error per \SI{1.5}{\percent} of emissivity error. The built and
+vegetated values used here differ by \num{0.015}, that is
+\SI{1.5}{\percent}, so a shift of order \SI{1}{\kelvin} between the
+two zones is exactly what the rule predicts. The observed change in
+UHI is \SI{0.98}{\degreeCelsius}, which is close enough to the
+predicted magnitude to serve as a check that the correction has been
+applied correctly rather than introducing an artefact.
+
+The report treats the emissivity-corrected value,
+\SI{2.13}{\degreeCelsius}, as its night-time result. Brightness
+temperature is not a surface temperature: it is the temperature a
+blackbody would need to be to emit the measured radiance, and real
+surfaces emit less than a blackbody. Reporting $T_b$ as though it were
+LST would understate the heat island by nearly a degree, and would
+understate it unevenly, because the error scales with how far each
+surface's emissivity sits below unity.
+
+\subsection{Reconciling the two parts}
+\label{sec:zonemismatch}
+
+An earlier version of Part~A used non-built pixels \emph{inside} the
+city boundary as its rural reference, and did not exclude water. That
+is a different definition from Part~B's external ring, and it made the
+two parts non-comparable. Part~A was therefore rerun with the external
+\SIrange{5}{20}{\kilo\metre} ring, water and wetland excluded, so both
+parts now use identical zones.
+
+The change is large enough to matter:
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{lrrr}
+\toprule
+\textbf{Variable} & \textbf{Internal} & \textbf{External ring} &
+\textbf{Change} \\
+ & (\si{\degreeCelsius}) & (\si{\degreeCelsius}) &
+(\si{\degreeCelsius}) \\
+\midrule
+Day LST       & 3.811 & 2.385 & $-1.426$ \\
+Night $T_b$     & 0.339 & 1.146 & $+0.806$ \\
+Night LST     & 1.331 & 2.127 & $+0.796$ \\
+\bottomrule
+\end{tabular}
+\caption{Effect of moving the rural reference outside the city, with
+all other settings held fixed. Internal rural means: 31.64
+(day LST), 21.12 ($T_b$), 22.15 (night LST)~\si{\degreeCelsius}.}
+\label{tab:refdef}
+\end{table}
+
+Moving
+the reference outside the city changes both figures, but in opposite
+directions: daytime UHI falls by \SI{1.43}{\degreeCelsius} while
+night-time UHI rises by \SI{0.80}{\degreeCelsius}. A single cause
+produces both.
+
+An internal reference is made of parks, maidans, mangrove fringe and
+undeveloped plots embedded within the built fabric. By day these are
+the coolest surfaces in the city --- vegetated, often irrigated,
+shaded --- and are cooler than genuine countryside, which by October
+is drying out. Using them as the reference therefore exaggerates the
+daytime contrast. By night the same patches are warmed by the
+surrounding built fabric and by the urban plume they sit inside, so
+they are \emph{warmer} than true rural land, and using them suppresses
+the night-time contrast. The internal reference is biased in whichever
+direction makes the city look more like its surroundings at night and
+less like them by day.
+
+The corrected night-time figure, \SI{2.13}{\degreeCelsius}, agrees
+with MODIS Terra night for post-monsoon 2015 at
+\SI{2.09}{\degreeCelsius}. The two retrievals share almost no
+methodology --- different sensor, resolution, retrieval algorithm and
+emissivity treatment --- so agreement to
+\SI{0.04}{\degreeCelsius} is meaningful corroboration rather than
+coincidence. The original \SI{0.32}{\degreeCelsius} had no such
+support, and its disagreement with MODIS was the first sign that the
+reference definition was at fault.
+
 \section{Part B --- Seasonal UHI from MODIS}
 \label{sec:partB}
 % =============================================================
@@ -863,12 +1090,7 @@ variation. The gap is widest in pre-monsoon (\num{2.60} against
 \num{1.60}), when differences in soil moisture between rural cover
 types are largest.
 
-% =============================================================
-\section{Sensitivity analysis}
-\label{sec:sensitivity}
-% =============================================================
-
-\subsection{Interannual stability (Part B)}
+\subsection{Sensitivity: interannual stability}
 \label{sec:interannual}
 
 \begin{table}[htbp]
@@ -923,7 +1145,7 @@ year's composite is built from a small and differently-composed set of
 clear days, so year-to-year variation reflects which days happened to
 be clear as much as any change in the surface.
 
-\subsection{Rural ring definition (Part B)}
+\subsection{Sensitivity: rural ring definition}
 \label{sec:ringsens}
 
 \begin{table}[htbp]
@@ -994,7 +1216,7 @@ land-cover gradient outside the city is consistently present, while
 the single Landsat scene carries one day's conditions in which that
 gradient may be weaker.
 
-\subsection{Water in the rural reference (Part B)}
+\subsection{Sensitivity: water in the rural reference}
 \label{sec:watertest}
 
 UHI was recomputed with water, wetland and mangrove left in the rural
@@ -1061,147 +1283,6 @@ rather than physics. Excluding water is therefore necessary rather
 than merely tidy, and the necessity is sharpest exactly where the
 signal is weakest.
 
-\subsection{Reference definition and emissivity (Part A)}
-\label{sec:landsatsens}
-
-\paragraph{Rural ring.}
-The same four ring variants used in Part~B were run on the Landsat
-scenes.
-
-\begin{table}[htbp]
-\centering
-\begin{tabular}{lrr}
-\toprule
-\textbf{Ring} & \textbf{Day UHI} & \textbf{Night UHI} \\
- & (\si{\degreeCelsius}) & (\si{\degreeCelsius}) \\
-\midrule
-\SIrange{2}{20}{\kilo\metre}  & 2.400 & 2.047 \\
-\SIrange{5}{20}{\kilo\metre}$^\dagger$ & 2.385 & 2.127 \\
-\SIrange{10}{25}{\kilo\metre} & 2.443 & 2.223 \\
-\SIrange{5}{30}{\kilo\metre}  & 2.392 & 2.129 \\
-\midrule
-\textbf{Range}                & 0.058 & 0.176 \\
-\bottomrule
-\end{tabular}
-\caption{Landsat UHI under four rural ring definitions.
-$^\dagger$ headline definition.}
-\label{tab:landsat_ring}
-\end{table}
-
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=0.72\textwidth]{fig10_landsat_ring.pdf}
-\caption{Landsat UHI under four rural ring definitions.}
-\label{fig:landsat_ring}
-\end{figure}
-
-Landsat UHI moves by at most \SI{0.18}{\degreeCelsius} across the four
-rings --- markedly less than the MODIS equivalent in
-Table~\ref{tab:ringsens}, which ranges up to
-\SI{0.50}{\degreeCelsius}.
-
-Landsat
-is the less sensitive of the two despite the finer grid, which is at
-first counter-intuitive. The explanation is temporal rather than
-spatial. The MODIS sweep operates on a five-year seasonal mean in
-which the land-cover gradient outside the city --- irrigated land
-close in, drier land further out --- is consistently present, so
-moving the ring systematically changes what the reference is made of.
-The Landsat sweep operates on one October morning, when that gradient
-was weaker: post-monsoon soil moisture was still widely distributed,
-so land at \SI{2}{} and \SI{10}{\kilo\metre} was thermally more alike
-than it would be in, say, April.
-
-The result is a useful caution. A sensitivity test on a single scene
-measures how much the answer depends on the zone definition
-\emph{on that date}, not in general. Part~B's sweep, spanning five
-years and four seasons, is the better guide to how much the choice
-matters overall.
-
-\paragraph{Water in the rural reference.}
-The same test run in Part~B was repeated on the Landsat scenes.
-
-\begin{table}[htbp]
-\centering
-\begin{tabular}{lrrr}
-\toprule
-\textbf{Mode} & \textbf{Water excl.} & \textbf{Water incl.} &
-\textbf{Difference} \\
- & (\si{\degreeCelsius}) & (\si{\degreeCelsius}) &
-(\si{\degreeCelsius}) \\
-\midrule
-Day   & $+2.385$ & $+5.635$ & $+3.250$ \\
-Night & $+2.127$ & $+1.200$ & $-0.927$ \\
-\bottomrule
-\end{tabular}
-\caption{Effect of retaining water in the rural reference, Landsat.
-Rural means with water included: \SI{29.82}{\degreeCelsius} by day,
-\SI{22.28}{\degreeCelsius} by night.}
-\label{tab:landsat_water}
-\end{table}
-
-Including water more than doubles the daytime figure
-($+2.39 \rightarrow +5.64$) and nearly halves the night-time one
-($+2.13 \rightarrow +1.20$). The effect is an order of magnitude
-larger than the MODIS equivalent in Table~\ref{tab:watertest}, where
-the largest shift was \SI{0.45}{\degreeCelsius}.
-
-The
-sign reversal matches the prediction and the MODIS result, but the
-magnitude does not: \SI{3.25}{\degreeCelsius} by day here against a
-MODIS maximum of \SI{0.45}{\degreeCelsius}.
-
-Two things differ. First, averaging. The MODIS figure is a five-year
-seasonal mean, and a water surface is almost the same temperature
-every day of every year --- so in a multi-year composite the sea
-contributes a stable, heavily-averaged value, while the land around it
-varies and partially averages out. In a single scene the full
-instantaneous land--sea contrast is present undiluted. On 8 October
-the daytime mean of water was \SI{27.55}{\degreeCelsius} against
-\SI{36.92}{\degreeCelsius} for built-up, a gap of nearly ten degrees
-(Table~\ref{tab:byclass}).
-
-Second, mixing. At \SI{1}{\kilo\metre} a coastal MODIS pixel is part
-land and part sea, and its retrieved temperature is already a blend;
-the land--sea boundary is smeared across the pixel grid before any
-zonal statistic is taken. At \SI{100}{\metre} the boundary is sharp
-and sea pixels enter the rural mean at their full, undiluted value. The
-finer sensor is therefore \emph{more} exposed to the error, not less
---- which is worth stating plainly, because the intuition that higher
-resolution is uniformly safer does not hold here.
-
-\paragraph{Emissivity correction.}
-Night-time UHI computed from brightness temperature is
-\SI{1.15}{\degreeCelsius}; from emissivity-corrected LST it is
-\SI{2.13}{\degreeCelsius}. Applying the correction nearly doubles the
-result.
-
-The correction does not cancel in the urban-minus-rural subtraction
-because the two zones have different emissivities: built-up is
-assigned \num{0.970} and vegetated surfaces \num{0.985}. A surface
-with lower emissivity emits less at a given temperature, so correcting
-for it raises the retrieved temperature more over the city than over
-the countryside, widening the difference.
-
-The
-rule of thumb from the module material is roughly \SI{1}{\kelvin} of
-LST error per \SI{1.5}{\percent} of emissivity error. The built and
-vegetated values used here differ by \num{0.015}, that is
-\SI{1.5}{\percent}, so a shift of order \SI{1}{\kelvin} between the
-two zones is exactly what the rule predicts. The observed change in
-UHI is \SI{0.98}{\degreeCelsius}, which is close enough to the
-predicted magnitude to serve as a check that the correction has been
-applied correctly rather than introducing an artefact.
-
-The report treats the emissivity-corrected value,
-\SI{2.13}{\degreeCelsius}, as its night-time result. Brightness
-temperature is not a surface temperature: it is the temperature a
-blackbody would need to be to emit the measured radiance, and real
-surfaces emit less than a blackbody. Reporting $T_b$ as though it were
-LST would understate the heat island by nearly a degree, and would
-understate it unevenly, because the error scales with how far each
-surface's emissivity sits below unity.
-
 % =============================================================
 \section{Comparing Landsat and MODIS}
 \label{sec:comparison}
@@ -1255,66 +1336,6 @@ acquisition year.}
 \caption{MODIS post-monsoon SUHI, 2015 against the 2019--2023 mean.}
 \label{fig:cross}
 \end{figure}
-
-\subsection{Reconciling the two parts}
-\label{sec:zonemismatch}
-
-An earlier version of Part~A used non-built pixels \emph{inside} the
-city boundary as its rural reference, and did not exclude water. That
-is a different definition from Part~B's external ring, and it made the
-two parts non-comparable. Part~A was therefore rerun with the external
-\SIrange{5}{20}{\kilo\metre} ring, water and wetland excluded, so both
-parts now use identical zones.
-
-The change is large enough to matter:
-
-\begin{table}[htbp]
-\centering
-\begin{tabular}{lrrr}
-\toprule
-\textbf{Variable} & \textbf{Internal} & \textbf{External ring} &
-\textbf{Change} \\
- & (\si{\degreeCelsius}) & (\si{\degreeCelsius}) &
-(\si{\degreeCelsius}) \\
-\midrule
-Day LST       & 3.811 & 2.385 & $-1.426$ \\
-Night $T_b$     & 0.339 & 1.146 & $+0.806$ \\
-Night LST     & 1.331 & 2.127 & $+0.796$ \\
-\bottomrule
-\end{tabular}
-\caption{Effect of moving the rural reference outside the city, with
-all other settings held fixed. Internal rural means: 31.64
-(day LST), 21.12 ($T_b$), 22.15 (night LST)~\si{\degreeCelsius}.}
-\label{tab:refdef}
-\end{table}
-
-Moving
-the reference outside the city changes both figures, but in opposite
-directions: daytime UHI falls by \SI{1.43}{\degreeCelsius} while
-night-time UHI rises by \SI{0.80}{\degreeCelsius}. A single cause
-produces both.
-
-An internal reference is made of parks, maidans, mangrove fringe and
-undeveloped plots embedded within the built fabric. By day these are
-the coolest surfaces in the city --- vegetated, often irrigated,
-shaded --- and are cooler than genuine countryside, which by October
-is drying out. Using them as the reference therefore exaggerates the
-daytime contrast. By night the same patches are warmed by the
-surrounding built fabric and by the urban plume they sit inside, so
-they are \emph{warmer} than true rural land, and using them suppresses
-the night-time contrast. The internal reference is biased in whichever
-direction makes the city look more like its surroundings at night and
-less like them by day.
-
-The corrected night-time figure, \SI{2.13}{\degreeCelsius}, agrees
-with MODIS Terra night for post-monsoon 2015 at
-\SI{2.09}{\degreeCelsius}. The two retrievals share almost no
-methodology --- different sensor, resolution, retrieval algorithm and
-emissivity treatment --- so agreement to
-\SI{0.04}{\degreeCelsius} is meaningful corroboration rather than
-coincidence. The original \SI{0.32}{\degreeCelsius} had no such
-support, and its disagreement with MODIS was the first sign that the
-reference definition was at fault.
 
 \subsection{Accounting for the disagreement}
 
