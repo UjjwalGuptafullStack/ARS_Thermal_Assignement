@@ -173,6 +173,13 @@ for r in dist:
     except (ValueError, KeyError):
         pass
 
+# Authoritative UHI per season, from the full-population zonal mean
+# (Terra day) rather than recomputed from this plotting sample — see
+# the note on the Landsat distribution figure above for why the two
+# differ slightly and why the table value is the one to show.
+season_uhi = {r['season']: float(r['uhi']) for r in head
+              if r['platform'] == 'Terra' and r['mode'] == 'Day'}
+
 fig, axes = plt.subplots(2, 2, figsize=(10, 6.5))
 for ax, s in zip(axes.ravel(), SEASONS):
     u, rr = bykey[(s, 'Urban')], bykey[(s, 'Rural')]
@@ -184,7 +191,7 @@ for ax, s in zip(axes.ravel(), SEASONS):
     ax.hist(u,  bins=bins, color=C_URBAN, alpha=0.65, label='Urban', density=True)
     ax.axvline(np.mean(rr), color=C_RURAL, ls='--', lw=1.3)
     ax.axvline(np.mean(u),  color=C_URBAN, ls='--', lw=1.3)
-    ax.set_title('%s   (ΔT = %+.2f °C)' % (s, np.mean(u) - np.mean(rr)), fontsize=9.5)
+    ax.set_title('%s   (UHI = %+.2f °C)' % (s, season_uhi[s]), fontsize=9.5)
     ax.set_xlabel('LST (°C)'); ax.set_ylabel('Density')
     ax.legend(frameon=False, fontsize=7.5)
 fig.suptitle('Urban and rural LST distributions by season (Terra day, 2019–2023)',
@@ -196,10 +203,18 @@ save(fig, 'fig6_distributions')
 # ---------------------------------------------------------------
 # Fig 7 — cross-sensor comparison, post-monsoon
 # ---------------------------------------------------------------
+# Landsat rows (external 5-20 km ring, same zones as MODIS — see
+# Table "Reconciling the two parts" in the report). Night is the
+# emissivity-corrected LST value, not raw brightness temperature.
+LANDSAT_UHI = {'Day': 2.385, 'Night': 2.127}
+
 cmp_ = load('Mumbai_MODIS_Landsat_Comparison.csv')
-fig, ax = plt.subplots(figsize=(8, 4))
+fig, ax = plt.subplots(figsize=(9.5, 4.2))
 labels, vals, cols = [], [], []
 for mode in ['Day', 'Night']:
+    labels.append('Landsat\n%s' % mode)
+    vals.append(LANDSAT_UHI[mode])
+    cols.append('#2a9d8f')
     for plat in ['Terra', 'Aqua']:
         for per_ in ['2015 only (matched to Landsat)', '2019-2023 mean']:
             m = [r for r in cmp_ if r['mode'] == mode and r['platform'] == plat
@@ -214,12 +229,8 @@ ax.bar_label(b, fmt='%.2f', fontsize=7.5, padding=2)
 ax.set_xticks(range(len(labels)))
 ax.set_xticklabels(labels, fontsize=7.5)
 ax.set_ylabel('SUHI intensity (°C)')
-ax.set_title('Post-monsoon SUHI: MODIS rows for comparison with Landsat (8–9 Oct 2015)',
+ax.set_title('Post-monsoon SUHI: Landsat (8–9 Oct 2015) against matched MODIS rows',
              fontsize=10)
-ax.annotate("add M's Landsat day/night bars here once the rural\n"
-            "definition is reconciled between Part A and Part B",
-            xy=(0.60, 0.80), xycoords='axes fraction', fontsize=7.5,
-            style='italic', color='#888')
 save(fig, 'fig7_cross_sensor')
 
 
@@ -280,6 +291,13 @@ if os.path.exists(ls_path):
         except (ValueError, KeyError):
             pass
 
+    # Authoritative UHI values come from the full-population zonal mean
+    # in the headline table, not from this plotting sample (.sample()
+    # draws a random subset of pixels for the histogram, so its mean
+    # differs slightly from the true zonal mean — using it here would
+    # print a second, inconsistent UHI figure next to the real one).
+    landsat_uhi = {'Day': 2.39, 'Night': 2.13}
+
     fig, axes = plt.subplots(1, 2, figsize=(10, 3.8))
     for ax, mode in zip(axes, ['Day', 'Night']):
         u, rr = lk[(mode, 'Urban')], lk[(mode, 'Rural')]
@@ -291,8 +309,8 @@ if os.path.exists(ls_path):
         ax.axvline(np.mean(rr), color=C_RURAL, ls='--', lw=1.3)
         ax.axvline(np.mean(u),  color=C_URBAN, ls='--', lw=1.3)
         date = '8 Oct 2015' if mode == 'Day' else '9 Oct 2015'
-        ax.set_title('%s — %s   (ΔT = %+.2f °C)'
-                     % (mode, date, np.mean(u) - np.mean(rr)), fontsize=9.5)
+        ax.set_title('%s — %s   (UHI = %+.2f °C)'
+                     % (mode, date, landsat_uhi[mode]), fontsize=9.5)
         ax.set_xlabel('LST (°C)'); ax.set_ylabel('Density')
         ax.legend(frameon=False, fontsize=7.5)
     fig.suptitle('Landsat urban and rural LST distributions', fontsize=11, y=1.02)

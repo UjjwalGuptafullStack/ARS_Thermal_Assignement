@@ -61,14 +61,13 @@ island persists year-round.
 \section{Introduction}
 % =============================================================
 
-Mumbai is
-among the most densely populated cities in the world, built on a
-coastal peninsula with limited room to expand outward. Replacing
+Mumbai is among the most densely populated cities in the world, built
+on a coastal peninsula with limited room to expand outward. Replacing
 vegetated and bare ground with concrete, asphalt and roofing changes
 the surface energy balance: built materials store more heat during the
 day and release it slowly after sunset, while the loss of vegetation
 removes the evaporative cooling that would otherwise moderate daytime
-temperatures. The consequences are practical --- heat stress and
+temperatures. The consequences are practical: heat stress and
 heat-related mortality, higher building cooling demand and electricity
 consumption, degraded outdoor thermal comfort, and interaction with
 air pollution.
@@ -95,10 +94,10 @@ reflect sensor and season rather than method.
 
 Both parts use the same area of interest and the same urban and rural
 zones, so that any difference between them comes from the sensor or
-the season rather than from the method. The one departure --- a
+the season rather than from the method. The one departure is a
 \SI{100}{\metre} geometry simplification applied in Part~A for
-computational reasons, sub-pixel at both statistics scales --- is
-described in Section~\ref{sec:landsat_scale}.
+computational reasons, sub-pixel at both statistics scales, described
+in Section~\ref{sec:landsat_scale}.
 
 \subsection{Boundary}
 
@@ -122,7 +121,7 @@ Area   & \SI{481.56}{\kilo\metre\squared} (ellipsoidal),
 
 No reprojection was applied. Earth Engine works in EPSG:4326
 internally, and all areas were computed on the ellipsoid rather than
-in projected units --- which is why the two area figures in
+in projected units, which is why the two area figures in
 Table~\ref{tab:boundary} differ slightly. The
 \SI{1.5}{\kilo\metre\squared} gap is a difference of method, not of
 data.
@@ -131,16 +130,15 @@ data.
 GADM names this polygon ``Mumbai City'' (\texttt{IND.20.17\_1}), but
 its bounding extent runs from \ang{18.891}\,N to \ang{19.269}\,N and
 the mapped area is \SI{480.1}{\kilo\metre\squared}. The Mumbai City
-district proper --- the island city --- ends near \ang{19.03}\,N and
-covers roughly \SI{157}{\kilo\metre\squared}. The polygon used here
-therefore spans both Mumbai City and Mumbai Suburban districts, that
-is, Greater Mumbai, despite carrying the narrower GADM label. It is
-referred to as Greater Mumbai throughout this report, and the GADM
-identifier is given above so the exact polygon can be retrieved.
+district proper, the island city, ends near \ang{19.03}\,N and covers
+roughly \SI{157}{\kilo\metre\squared}. The polygon used here therefore
+spans both Mumbai City and Mumbai Suburban districts, that is, Greater
+Mumbai, despite carrying the narrower GADM label. It is referred to as
+Greater Mumbai throughout this report, and the GADM identifier is
+given above so the exact polygon can be retrieved.
 
 \paragraph{Why this level, and what the alternatives would have done.}
-Three
-definitions of ``Mumbai'' were available. The municipal limit of
+Three definitions of ``Mumbai'' were available. The municipal limit of
 Greater Mumbai, administered by the MCGM, is the polygon used here.
 The Mumbai Metropolitan Region (MMR) extends much further, taking in
 Thane, Kalyan, Navi Mumbai and a large area of open land between them.
@@ -155,8 +153,8 @@ line. It is also the unit against which any policy response would be
 framed.
 
 The alternatives would have moved the result in opposite directions.
-MMR would pull a great deal of non-urban land inside the boundary ---
-the region is far from uniformly built --- diluting the urban mean
+MMR would pull a great deal of non-urban land inside the boundary
+(the region is far from uniformly built), diluting the urban mean
 with vegetated and agricultural pixels and lowering the measured UHI.
 It would also consume much of the land that here serves as the rural
 reference, forcing the ring further out. A built-up extent would do
@@ -171,9 +169,9 @@ Zones come from ESA WorldCover v200 (2021) \cite{worldcover}, a
 \SI{10}{\metre} global product with eleven classes.
 
 \begin{itemize}
-  \item \textbf{Urban} --- built-up (class 50) inside the boundary.
+  \item \textbf{Urban}: built-up (class 50) inside the boundary.
         \SI{204.72}{\kilo\metre\squared}.
-  \item \textbf{Rural} --- tree cover, shrubland, grassland, cropland
+  \item \textbf{Rural}: tree cover, shrubland, grassland, cropland
         and bare/sparse (classes 10, 20, 30, 40, 60) in a ring from
         \SI{5}{\kilo\metre} to \SI{20}{\kilo\metre} beyond the
         boundary. \SI{962.13}{\kilo\metre\squared}.
@@ -213,16 +211,16 @@ discard mixed-pixel edges) was applied to either the urban or the
 rural mask. A different mechanism was used instead to achieve the same
 purpose. The urban zone is bounded by the administrative edge rather
 than eroded, and contamination of the \emph{rural} reference by the
-urban fringe --- the effect erosion is normally used to prevent --- is
+urban fringe, the effect erosion is normally used to prevent, is
 handled by the \SI{5}{\kilo\metre} inner gap of the ring
 (Section~\ref{sec:ringsens}): rather than eroding a rural mask that
 touches the city, the ring is defined so that it never touches the
 city in the first place.
 
 The ring's inner and outer radii were therefore treated as the
-parameter to sweep, in place of an erosion radius, and the same
-question the brief asks of erosion --- how far the buffer extends and
-how much UHI moves as a result --- is answered by
+parameter to sweep, in place of an erosion radius. The same question
+the brief asks of erosion, how far the buffer extends and how much UHI
+moves as a result, is answered by
 Table~\ref{tab:ringsens} and Table~\ref{tab:landsat_ring}: moving the
 inner edge from \SI{2}{} to \SI{10}{\kilo\metre} shifts MODIS UHI by
 up to \SI{0.50}{\degreeCelsius}, and the same sweep on Landsat shifts
@@ -266,7 +264,7 @@ by night, which would suppress night-time UHI. Section~\ref{sec:watertest}
 measures this rather than assuming it.
 
 % =============================================================
-\section{Part A --- Day and night UHI from Landsat}
+\section{Part A: Day and night UHI from Landsat}
 \label{sec:partA}
 % =============================================================
 
@@ -297,7 +295,7 @@ Valid-pixel fraction, ring & 95.2\,\% & 99.6\,\% \\
 \end{table}
 
 The two scenes are one day apart, which is what makes the day/night
-comparison meaningful --- a larger gap would mix the diurnal signal
+comparison meaningful. A larger gap would mix the diurnal signal
 with changing weather.
 
 Night-time Landsat acquisitions are rare and irregular. They are
@@ -305,7 +303,7 @@ ascending-node passes, so the same ground location carries a different
 WRS-2 path/row by night than by day, and they are frequently filed in
 Tier~2 rather than Tier~1 because of looser geometric accuracy. Both
 tiers were therefore searched, and because night scenes cannot be
-chosen freely, the daytime scene was picked \emph{after} --- the
+chosen freely, the daytime scene was picked \emph{after}: the
 nearest clear daytime acquisition to the identified night scene,
 rather than the other way round.
 
@@ -314,7 +312,7 @@ scenes are one day apart, so the diurnal comparison is not confounded
 by a change in synoptic conditions. The daytime scene has 8.49\,\%
 cloud cover and retains ample valid pixels after masking (reported
 below). And the night-time scene's temperatures are physically
-plausible for a Mumbai October night --- an earlier candidate pair in
+plausible for a Mumbai October night; an earlier candidate pair in
 November was rejected because its night-time values were anomalously
 low, in a range inconsistent with the season.
 
@@ -322,7 +320,7 @@ low, in a range inconsistent with the season.
 
 Both scenes were screened on \texttt{QA\_PIXEL}, masking bits 0--5:
 fill, dilated cloud, cirrus, cloud, cloud shadow and snow. Bit~6
-(clear) and bit~7 (water) were left unmasked --- water is handled
+(clear) and bit~7 (water) were left unmasked; water is handled
 through WorldCover instead, so that the two parts treat it the same
 way. Valid-pixel fractions after masking are given in
 Table~\ref{tab:scenes} and discussed in Section~\ref{sec:landsat_results}.
@@ -371,7 +369,7 @@ signal at night. The values assigned follow standard tabulations:
 \num{0.970} for built-up, \num{0.985} for vegetated surfaces,
 \num{0.960} for bare ground and \num{0.990} for water. The daytime
 scene needs no such treatment, since the Collection~2 Level-2 product
-applies its own ASTER-GED-derived emissivity during retrieval --- so
+applies its own ASTER-GED-derived emissivity during retrieval, so
 day and night use different emissivity methods, which is a
 consequence of what each observation makes available rather than a
 choice between equals.
@@ -379,8 +377,8 @@ choice between equals.
 \paragraph{Statistics scale.}
 \label{sec:landsat_scale}
 
-The analysis extent --- the district plus the \SI{20}{\kilo\metre}
-rural buffer --- covers about \SI{2800}{\kilo\metre\squared}, which at
+The analysis extent, the district plus the \SI{20}{\kilo\metre}
+rural buffer, covers about \SI{2800}{\kilo\metre\squared}, which at
 the native \SI{30}{\metre} is roughly \num{3.1} billion pixels and
 beyond what Earth Engine will reduce interactively. Zonal statistics
 were computed at \SI{100}{\metre}, diagnostics at
@@ -390,7 +388,7 @@ ten times finer than the MODIS grid, so the resolution argument in
 Section~\ref{sec:comparison} is unaffected. The boundary was also
 simplified to a \SI{100}{\metre} tolerance before the ring was built;
 Part~B uses the unsimplified polygon, so the two rings differ by at
-most \SI{100}{\metre} --- sub-pixel for both.
+most \SI{100}{\metre}, sub-pixel for both.
 
 \subsection{Results}
 \label{sec:landsat_results}
@@ -447,24 +445,18 @@ extent, 8 October 2015.}
 \label{tab:byclass}
 \end{table}
 
-Built-up is the warmest class by \SI{2.35}{\degreeCelsius} over the
-next warmest, and water the coolest, \SI{9.37}{\degreeCelsius} below
-built-up. The three classes excluded from the rural reference ---
-water, wetland and mangrove --- are the three coolest.
-
-The table does two
-things. It confirms that built-up is genuinely the warmest class, by
-\SI{2.35}{\degreeCelsius} over bare and sparse vegetation, so the
-urban signal comes from the built surface itself rather than from the
-urban zone happening to contain warm pixels of other kinds. And it
-quantifies what the exclusions in Section~\ref{sec:waterexcl} were
-worth: water, wetland and mangrove are the three coolest classes, at
-\SI{27.55}{}, \SI{29.72}{} and \SI{31.20}{\degreeCelsius} against a
-built-up mean of \SI{36.92}{\degreeCelsius}. Admitting water to the
-rural reference would have introduced a surface
-\SI{9.37}{\degreeCelsius} cooler than the urban zone, which is the
-direct cause of the inflated daytime figure in
-Table~\ref{tab:landsat_water}.
+The table does two things. It confirms that built-up is genuinely the
+warmest class, by \SI{2.35}{\degreeCelsius} over the next warmest
+(bare and sparse vegetation), so the urban signal comes from the built
+surface itself rather than from the urban zone happening to contain
+warm pixels of other kinds. And it quantifies what the exclusions in
+Section~\ref{sec:waterexcl} were worth: water, wetland and mangrove
+are the three coolest classes, at \SI{27.55}{}, \SI{29.72}{} and
+\SI{31.20}{\degreeCelsius} against a built-up mean of
+\SI{36.92}{\degreeCelsius}. Admitting water to the rural reference
+would have introduced a surface \SI{9.37}{\degreeCelsius} cooler than
+the urban zone, which is the direct cause of the inflated daytime
+figure in Table~\ref{tab:landsat_water}.
 
 \begin{figure}[htbp]
 \centering
@@ -477,8 +469,8 @@ zone means. Night uses the emissivity-corrected LST.}
 The two panels behave quite differently. By day the distributions
 overlap heavily, with the urban distribution shifted right but sharing
 most of its range with the rural one. At night the urban distribution
-collapses into a narrow peak near \SI{24}{\degreeCelsius} --- urban
-standard deviation \num{1.01} against rural \num{1.28} --- and sits
+collapses into a narrow peak near \SI{24}{\degreeCelsius} (standard
+deviation \num{1.01} against \num{1.28} for rural) and sits
 almost entirely above the rural spread.
 
 \begin{figure}[htbp]
@@ -512,8 +504,7 @@ anomaly maps make the built-up footprint easier to trace than the raw
 LST maps do, because they remove the broad north--south gradient
 present in both scenes.
 
-Day
-and night UHI are close in magnitude on this pair,
+Day and night UHI are close in magnitude on this pair,
 \SI{2.39}{\degreeCelsius} and \SI{2.13}{\degreeCelsius}. That
 similarity is specific to the date rather than general. October falls
 in the post-monsoon season, and Part~B shows this is the one season in
@@ -529,8 +520,8 @@ Landsat figure is an instantaneous measurement at \SI{30}{\metre} and
 the MODIS figure a climatological one at \SI{1}{\kilo\metre}.
 
 Against the matched MODIS rows for post-monsoon 2015
-(Table~\ref{tab:comparison}), the night-time agreement is close --- 
-\SI{2.13}{\degreeCelsius} against Terra's \SI{2.09}{\degreeCelsius} --- 
+(Table~\ref{tab:comparison}), the night-time agreement is close:
+\SI{2.13}{\degreeCelsius} against Terra's \SI{2.09}{\degreeCelsius},
 while the daytime figures diverge, \SI{2.39}{\degreeCelsius} against
 \SI{1.24}{\degreeCelsius}. The night agreement is the more surprising
 of the two, since the two retrievals share almost nothing: different
@@ -544,7 +535,7 @@ the urban distribution is a narrow peak (sd \num{1.01}) sitting almost
 entirely above the rural spread (sd \num{1.28}); nearly every urban
 pixel is warmer than nearly every rural one. By day the two overlap
 heavily despite a larger mean difference, so the daytime figure
-depends much more on which pixels fall in each zone --- and therefore
+depends much more on which pixels fall in each zone, and therefore
 on the zone definition, the pixel size, and the mixing that follows
 from them.
 
@@ -585,16 +576,15 @@ $^\dagger$ headline definition.}
 \end{figure}
 
 Landsat UHI moves by at most \SI{0.18}{\degreeCelsius} across the four
-rings --- markedly less than the MODIS equivalent in
+rings, markedly less than the MODIS equivalent in
 Table~\ref{tab:ringsens}, which ranges up to
 \SI{0.50}{\degreeCelsius}.
 
-Landsat
-is the less sensitive of the two despite the finer grid, which is at
-first counter-intuitive. The explanation is temporal rather than
+Landsat is the less sensitive of the two despite the finer grid, which
+is at first counter-intuitive. The explanation is temporal rather than
 spatial. The MODIS sweep operates on a five-year seasonal mean in
-which the land-cover gradient outside the city --- irrigated land
-close in, drier land further out --- is consistently present, so
+which the land-cover gradient outside the city (irrigated land
+close in, drier land further out) is consistently present, so
 moving the ring systematically changes what the reference is made of.
 The Landsat sweep operates on one October morning, when that gradient
 was weaker: post-monsoon soil moisture was still widely distributed,
@@ -642,7 +632,7 @@ MODIS maximum of \SI{0.45}{\degreeCelsius}.
 
 Two things differ. First, averaging. The MODIS figure is a five-year
 seasonal mean, and a water surface is almost the same temperature
-every day of every year --- so in a multi-year composite the sea
+every day of every year, so in a multi-year composite the sea
 contributes a stable, heavily-averaged value, while the land around it
 varies and partially averages out. In a single scene the full
 instantaneous land--sea contrast is present undiluted. On 8 October
@@ -655,8 +645,8 @@ land and part sea, and its retrieved temperature is already a blend;
 the land--sea boundary is smeared across the pixel grid before any
 zonal statistic is taken. At \SI{100}{\metre} the boundary is sharp
 and sea pixels enter the rural mean at their full, undiluted value. The
-finer sensor is therefore \emph{more} exposed to the error, not less
---- which is worth stating plainly, because the intuition that higher
+finer sensor is therefore \emph{more} exposed to the error, not less,
+which is worth stating plainly, because the intuition that higher
 resolution is uniformly safer does not hold here.
 
 \paragraph{Emissivity correction.}
@@ -731,8 +721,8 @@ produces both.
 
 An internal reference is made of parks, maidans, mangrove fringe and
 undeveloped plots embedded within the built fabric. By day these are
-the coolest surfaces in the city --- vegetated, often irrigated,
-shaded --- and are cooler than genuine countryside, which by October
+the coolest surfaces in the city (vegetated, often irrigated,
+shaded), and are cooler than genuine countryside, which by October
 is drying out. Using them as the reference therefore exaggerates the
 daytime contrast. By night the same patches are warmed by the
 surrounding built fabric and by the urban plume they sit inside, so
@@ -744,14 +734,14 @@ less like them by day.
 The corrected night-time figure, \SI{2.13}{\degreeCelsius}, agrees
 with MODIS Terra night for post-monsoon 2015 at
 \SI{2.09}{\degreeCelsius}. The two retrievals share almost no
-methodology --- different sensor, resolution, retrieval algorithm and
-emissivity treatment --- so agreement to
+methodology (different sensor, resolution, retrieval algorithm and
+emissivity treatment), so agreement to
 \SI{0.04}{\degreeCelsius} is meaningful corroboration rather than
 coincidence. The original \SI{0.32}{\degreeCelsius} had no such
 support, and its disagreement with MODIS was the first sign that the
 reference definition was at fault.
 
-\section{Part B --- Seasonal UHI from MODIS}
+\section{Part B: Seasonal UHI from MODIS}
 \label{sec:partB}
 % =============================================================
 
@@ -818,7 +808,7 @@ by the onset and withdrawal of the southwest monsoon, not the
 solstices. December still carries post-monsoon soil moisture and is
 not thermally like January, which is why IMD places it in
 post-monsoon. And no IMD season crosses a calendar year, so each year
-gives exactly one clean instance of each season --- which is what
+gives exactly one clean instance of each season, which is what
 makes the year-by-year analysis in Section~\ref{sec:interannual}
 possible. A DJF winter would straddle two years and force an arbitrary
 choice about each December.
@@ -829,7 +819,7 @@ IMD's revised normal dates for Mumbai place monsoon onset at
 which is what fixes the June--September window used for the monsoon
 season here: it is bounded by the city's own onset and withdrawal
 dates rather than a generic national figure. The pre-monsoon window is
-the driest and hottest part of the year at this station --- the
+the driest and hottest part of the year at this station: the
 1991--2020 normal gives a May mean daily maximum of
 \SI{34.3}{\degreeCelsius} against \SI{31.2}{\degreeCelsius} in
 January, with December--February rainfall below
@@ -844,8 +834,8 @@ latter is markedly cooler and equally dry.
 \label{sec:qc}
 
 Pixels were screened on \texttt{QC\_Day} and \texttt{QC\_Night}, keeping
-mandatory QA (bits 0--1) of 0 or 1 --- not cloud-flagged, not otherwise
-unproduced --- and LST error (bits 6--7) of 2 or better, meaning an
+mandatory QA (bits 0--1) of 0 or 1 (not cloud-flagged, not otherwise
+unproduced) and LST error (bits 6--7) of 2 or better, meaning an
 average retrieval error at or below \SI{3}{\kelvin}.
 
 The eight-day product is already cloud-screened, so this is not cloud
@@ -932,7 +922,7 @@ Night-time UHI is positive in every season on both platforms, from
 is negative in winter ($-0.41$ Terra, $-0.87$ Aqua) and strongly
 negative in pre-monsoon ($-2.72$, $-2.64$), near zero in monsoon, and
 positive only in post-monsoon ($+1.67$ on both). A negative value
-means the rural surface is hotter than the urban one --- a surface
+means the rural surface is hotter than the urban one: a surface
 urban \emph{cool} island.
 
 \paragraph{Why daytime UHI is negative in winter and pre-monsoon.}
@@ -959,8 +949,8 @@ diurnal ranges make this explicit: the urban zone falls
 \SI{9.87}{\degreeCelsius} between the Terra day and night overpasses
 in winter against \SI{13.07}{\degreeCelsius} for rural, and
 \SI{10.18}{} against \SI{14.81}{\degreeCelsius} in pre-monsoon. The
-city is thermally more stable in both directions --- slower to heat
-and slower to cool --- which is the definition of higher apparent
+city is thermally more stable in both directions, slower to heat
+and slower to cool, which is the definition of higher apparent
 thermal inertia. This is the nocturnal dominance Oke describes
 \cite{oke}, and it holds regardless of what the daytime signal is
 doing.
@@ -969,7 +959,7 @@ doing.
 Daytime UHI is near zero in monsoon ($+0.07$ Terra, $+0.92$ Aqua).
 When both surfaces are wet, evaporation dominates the energy balance
 on both sides of the boundary and the thermal contrast between them
-largely disappears --- the rural surface can no longer run away from
+largely disappears: the rural surface can no longer run away from
 the city because its water is not exhausted. This reading should be
 treated with caution: as Section~\ref{sec:sampling} shows, only
 13.3\,\% of monsoon retrievals survive screening, so the composite
@@ -992,14 +982,12 @@ of day, not about the season as a whole.
 
 \paragraph{The day--night reversal.}
 Daytime UHI is negative in two of four seasons while night-time UHI is
-positive in all four. Daytime UHI is
-negative in two of four seasons while night-time UHI is positive in
-all four. The heat island is therefore not a fixed property of the
-city: it reverses sign by day depending on how dry the surrounding
-countryside is, and persists only at night. The two behaviours have
-the same physical cause --- the higher thermal inertia of built
-surfaces --- expressed in opposite directions at opposite ends of the
-diurnal cycle.
+positive in all four. The heat island is therefore not a fixed
+property of the city: it reverses sign by day depending on how dry the
+surrounding countryside is, and persists only at night. The two
+behaviours have the same physical cause, the higher thermal inertia of
+built surfaces, expressed in opposite directions at opposite ends of
+the diurnal cycle.
 
 The diurnal ranges confirm this directly. Between the Terra day and
 night overpasses the urban zone changes by \SI{9.87}{},
@@ -1016,7 +1004,7 @@ day and warmer by night, which is what the seasonal table shows.
 
 The monsoon composite is not an average over the monsoon. It averages
 those monsoon days clear enough for a retrieval to be produced and
-pass screening --- the least monsoon-like days of the season.
+pass screening: the least monsoon-like days of the season.
 
 \begin{table}[htbp]
 \centering
@@ -1046,15 +1034,10 @@ the most input and the fewest usable observations.}
 \end{figure}
 
 Monsoon has twice as many composites available as winter but retains
-the fewest valid retrievals --- 10.7 per pixel, 13.3\,\%, against
-roughly 38\,\% elsewhere.
-
-The
-monsoon composite averages the 13.3\,\% of eight-day periods clear
-enough for a retrieval to be produced and pass screening. Those are by
-construction the least monsoon-like days of the season: the ones with
-broken cloud, more incoming radiation and drier surfaces than the
-seasonal norm.
+the fewest valid retrievals: 10.7 per pixel, 13.3\,\%, against
+roughly 38\,\% elsewhere. By construction these are the least
+monsoon-like days of the season: the ones with broken cloud, more
+incoming radiation and drier surfaces than the seasonal norm.
 
 The bias therefore runs toward the pre-monsoon condition. On a genuine
 monsoon day both surfaces would be wet and the contrast between them
@@ -1081,11 +1064,11 @@ Dashed lines mark zone means.}
 \label{fig:dist}
 \end{figure}
 
-The four
-panels show two different regimes. In pre-monsoon the distributions
-are almost fully separated, with rural lying to the right of urban ---
-the countryside is not merely hotter on average but hotter pixel for
-pixel. In post-monsoon the separation reverses and narrows. Winter and
+The four panels show two different regimes. In pre-monsoon the
+distributions are almost fully separated, with rural lying to the
+right of urban: the countryside is not merely hotter on average but
+hotter pixel for pixel. In post-monsoon the separation reverses and
+narrows. Winter and
 monsoon overlap heavily, which is consistent with their near-zero mean
 differences: the zones shift relative to one another without
 separating.
@@ -1141,7 +1124,7 @@ changing sign three times.
 Comparing spread against separation makes the point quantitative.
 Pre-monsoon and post-monsoon are about \SI{4.4}{\degreeCelsius} apart
 while their year-to-year ranges are \SI{1.06}{} and
-\SI{0.60}{\degreeCelsius} --- the seasonal difference is four to seven
+\SI{0.60}{\degreeCelsius}: the seasonal difference is four to seven
 times the interannual noise, so the contrast between them is real.
 Monsoon has a range of \SI{2.20}{\degreeCelsius}, larger than its
 distance from zero in any year, so its sign is not established by
@@ -1151,7 +1134,7 @@ Three of the four seasonal results are therefore robust: the
 pre-monsoon cool island, the post-monsoon heat island, and the
 near-neutral winter. The monsoon figure is not, and its instability
 has the same origin as the sampling bias in
-Section~\ref{sec:sampling} --- with only 13.3\,\% retention, each
+Section~\ref{sec:sampling}: with only 13.3\,\% retention, each
 year's composite is built from a small and differently-composed set of
 clear days, so year-to-year variation reflects which days happened to
 be clear as much as any change in the surface.
@@ -1192,8 +1175,7 @@ Moving the inner edge from \SI{2}{\kilo\metre} to
 \SI{20}{\kilo\metre} to \SI{30}{\kilo\metre} changes almost nothing
 (\num{0.01} to \SI{0.03}{\degreeCelsius}).
 
-Moving the inner
-edge outward makes UHI more negative in every season: winter goes from
+Moving the inner edge outward makes UHI more negative in every season: winter goes from
 $-0.29$ to $-0.58$, pre-monsoon from $-2.55$ to
 $-3.05$\,\si{\degreeCelsius}. The rural mean rises as the ring moves
 away from the city, which means land nearer the boundary is cooler
@@ -1205,10 +1187,10 @@ produce the same signal, and this data cannot separate them.
 
 Either reading supports keeping a gap between city and reference. The
 \SI{5}{\kilo\metre} inner edge sits at the point where the trend is
-already flattening --- moving from \SI{2}{} to \SI{5}{\kilo\metre}
+already flattening: moving from \SI{2}{} to \SI{5}{\kilo\metre}
 changes UHI by \SI{0.17}{\degreeCelsius} in pre-monsoon, while
 \SI{5}{} to \SI{10}{\kilo\metre} changes it by
-\SI{0.33}{\degreeCelsius} --- so it excludes the most contaminated
+\SI{0.33}{\degreeCelsius}, so it excludes the most contaminated
 land without pushing the reference into a different landscape.
 
 The outer edge barely matters: extending from \SI{20}{} to
@@ -1276,7 +1258,7 @@ it suppresses it. The reversal confirms the mechanism: the sea is
 cooler than land by day and warmer by night, so it pulls the rural
 mean in opposite directions at the two overpasses.
 
-The daytime effect is about five times the night-time one --- up to
+The daytime effect is about five times the night-time one: up to
 \SI{0.45}{} against \SI{0.09}{\degreeCelsius}. This follows from the
 diurnal ranges. Water's very high heat capacity means its surface
 temperature moves only slightly between day and night, while land
@@ -1344,14 +1326,14 @@ acquisition year.}
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.82\textwidth]{fig7_cross_sensor.pdf}
-\caption{MODIS post-monsoon SUHI, 2015 against the 2019--2023 mean.}
+\caption{Post-monsoon SUHI: Landsat (8--9 Oct 2015) against MODIS,
+2015-only and 2019--2023 mean, both platforms.}
 \label{fig:cross}
 \end{figure}
 
 \subsection{Accounting for the disagreement}
 
-The night-time
-figures agree closely: Landsat \SI{2.13}{} against Terra
+The night-time figures agree closely: Landsat \SI{2.13}{} against Terra
 \SI{2.09}{\degreeCelsius}. The daytime figures do not: Landsat
 \SI{2.39}{} against Terra \SI{1.24}{\degreeCelsius}, a gap of
 \SI{1.15}{\degreeCelsius}. The question is what explains the daytime
@@ -1360,7 +1342,7 @@ gap while leaving the night-time agreement intact.
 \paragraph{Resolution.} At \SI{1}{\kilo\metre} a MODIS pixel over
 Mumbai mixes built-up with vegetation, water and open ground, and the
 retrieved temperature is a blend. Mixing compresses the urban--rural
-contrast, so MODIS should read lower than Landsat --- and it does. The
+contrast, so MODIS should read lower than Landsat, and it does. The
 class means in Table~\ref{tab:byclass} give a sense of the scale:
 built-up at \SI{36.92}{} against tree cover at
 \SI{32.04}{\degreeCelsius}, so a pixel that is half each would read
@@ -1395,7 +1377,7 @@ uniformly elevated (Figure~\ref{fig:landsat_dist}), so a mixed pixel
 averages values that are all similar and mixing costs little. By day
 the urban distribution is broad and overlaps the rural one, so mixing
 pulls the urban mean down substantially. The same resolution
-difference costs little at night and a great deal by day --- which is
+difference costs little at night and a great deal by day, which is
 exactly the pattern observed.
 
 % =============================================================
@@ -1405,14 +1387,16 @@ exactly the pattern observed.
 \begin{itemize}
   \item WorldCover 2021 is used to classify 2015 Landsat observations,
         so the urban mask is an approximation of the 2015 extent.
-        Mumbai's built-up
-extent grew between 2015 and 2021, so some pixels classed as built-up
-in the 2021 product were not built in 2015. Those pixels would have
-been cooler by day than genuine 2015 built-up, so the urban mean is
-biased slightly low and the Part~A daytime UHI is, if anything, a
-slight underestimate.
-  \item The Landsat night-time variable is brightness temperature, not
-        a fully retrieved LST.
+        Mumbai's built-up extent grew between 2015 and 2021, so some
+        pixels classed as built-up in the 2021 product were not built
+        in 2015. Those pixels would have been cooler by day than
+        genuine 2015 built-up, so the urban mean is biased slightly
+        low and the Part~A daytime UHI is, if anything, a slight
+        underestimate.
+  \item The Landsat night-time result relies on a class-based
+        emissivity lookup rather than a per-pixel retrieval, since no
+        reflective-band data are available at night to support the
+        NDVI method used by day.
   \item Part~A rests on one daytime and one night-time scene, so the
         values carry that day's weather rather than a climatology.
   \item Both parts measure surface temperature, not near-surface air
@@ -1436,8 +1420,8 @@ Terra MODIS gives $-2.72$\,\si{\degreeCelsius} in pre-monsoon, when
 the dry countryside outheats the city, and $+1.67$\,\si{\degreeCelsius}
 in post-monsoon. By night it is positive in every season, between
 $+1.38$ and $+2.80$\,\si{\degreeCelsius}. Both behaviours follow from
-the same property --- built surfaces have higher thermal inertia than
-their surroundings --- expressed at opposite ends of the diurnal
+the same property, built surfaces have higher thermal inertia than
+their surroundings, expressed at opposite ends of the diurnal
 cycle. The urban diurnal range is narrower than the rural one in every
 season, by up to \SI{4.62}{\degreeCelsius}.
 
@@ -1540,9 +1524,9 @@ Both scripts run top to bottom without editing, and their parameters
 match those reported above.
 
 \begin{description}
-  \item[Part A --- Landsat day/night]\hfill \\
+  \item[Part A: Landsat day/night]\hfill \\
     \url{https://code.earthengine.google.com/c1128abfeafdf724eb9a03f539625722}
-  \item[Part B --- MODIS seasonal]\hfill \\
+  \item[Part B: MODIS seasonal]\hfill \\
     \url{https://code.earthengine.google.com/f00b8b3999cd01e32f97a9d001740569}
 \end{description}
 
@@ -1571,8 +1555,8 @@ It was \emph{not} used to generate the justification of any
 methodological choice, or the interpretation of any result. Those
 sections are our own work.
 
-All technical details supplied by the assistant --- scale factors, QA
-bit positions, band names --- were verified against the Earth Engine
+All technical details supplied by the assistant (scale factors, QA
+bit positions, band names) were verified against the Earth Engine
 catalogue and the relevant USGS and LP~DAAC product guides before
 being used, and those sources are cited rather than the assistant.
 
